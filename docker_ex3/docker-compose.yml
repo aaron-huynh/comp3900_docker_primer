@@ -4,10 +4,23 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
-  # TODO: add your code here (delete this line and follow the indent conventions)
   app:
-    # TODO: you will need to add to this
+    build: ./backend
+    ports:
+      - "8080:8080"
     environment:
       - REDIS_HOST=redis
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - ./backend:/app
   frontend:
-    # TODO: you will need to add to this
+    build: ./frontend
+    ports:
+      - "3901:80"
+    depends_on:
+      - app
+    restart: always
+    volumes:
+      - ./frontend:/app
